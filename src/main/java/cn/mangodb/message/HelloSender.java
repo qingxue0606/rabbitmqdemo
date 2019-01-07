@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cn.mangodb.entity.Boy;
+import cn.mangodb.util.ByteUtil;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -26,19 +27,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class HelloSender {
     @Autowired
     private AmqpTemplate template;
+    
     //@Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void send() {
         template.convertAndSend("xiang","xiang.123", "hello,rabbit~");
     }
-    @Scheduled(fixedDelay = 2000, initialDelay = 2000)
+    
+    //@Scheduled(fixedDelay = 2000, initialDelay = 2000)
     public void sendArray()   {
         //(数据类型)(最小值+Math.random()*(最大值-最小值+1))
-        byte[] bytes=new byte[256];
+        byte[] bytes=new byte[10];
         for(int i=0;i<bytes.length;i++) {
             byte b=(byte)(-128+Math.random()*(127+128+1));
             bytes[i]=b;
+            System.out.print(""+i+ Arrays.toString(ByteUtil.getBooleanArray(b)) +" ");
         }
-        System.out.println(Arrays.toString(bytes));
+        
+        System.out.println();
 
         template.convertAndSend("xiang","xiang.123", bytes);
     }
@@ -50,6 +55,7 @@ public class HelloSender {
         System.out.println(bytes);
         template.convertAndSend("xiang","xiang.123", bytes);
     }
+    
   //对象转化为字节码
     public  byte[] getBytesFromObject(Serializable obj) throws Exception {
         if (obj == null) {

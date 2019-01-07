@@ -20,7 +20,8 @@ public class HelloReceive {
 
         System.out.println("Receive:" + str);
     }
-    @RabbitListener(queues = "xiangQueue") // 监听器监听指定的Queue
+    
+    //@RabbitListener(queues = "xiangQueue") // 监听器监听指定的Queue
     public void processBites(byte[] bytes) {
         System.out.println("HelloReceive.processBites()");
         System.out.println(Arrays.toString(bytes));
