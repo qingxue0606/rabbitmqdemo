@@ -30,7 +30,7 @@ public class SendAndRecevice {
     @Autowired
     private AmqpTemplate template;
 
-    @Scheduled(fixedDelay = 200000, initialDelay = 2000)
+    @Scheduled(fixedDelay = 2000, initialDelay = 2000)
     public void sendArray() {
         // (数据类型)(最小值+Math.random()*(最大值-最小值+1))
         byte[] bytes = DataTest.getDataNo1();
