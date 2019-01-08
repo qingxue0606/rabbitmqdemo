@@ -26,5 +26,13 @@ public class ByteUtil {
      + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)
      + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);
      }
+     
+     public static byte[] inverseArray(byte[] array) {
+        byte[] ba=new byte[array.length];
+        for(int i=0;i<array.length;i++) {
+            ba[i]=(byte)~array[i];
+        }
+         return ba;
+    }
 
 }

@@ -1,13 +1,21 @@
 package cn.mangodb.message;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.support.CorrelationData;
+import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.rabbitmq.client.Channel;
 
 import cn.mangodb.data.DataTest;
 import cn.mangodb.util.ByteUtil;
@@ -22,7 +30,7 @@ public class SendAndRecevice {
     @Autowired
     private AmqpTemplate template;
 
-    @Scheduled(fixedDelay = 2000, initialDelay = 2000)
+    @Scheduled(fixedDelay = 200000, initialDelay = 2000)
     public void sendArray() {
         // (数据类型)(最小值+Math.random()*(最大值-最小值+1))
         byte[] bytes = DataTest.getDataNo1();
@@ -35,8 +43,12 @@ public class SendAndRecevice {
     }
     
     @RabbitListener(queues = "xiangQueue") // 监听器监听指定的Queue
-    public void receiveArray(byte[] bytes) {
+    public void receiveArray(byte[] bytes,@Headers Map<String, Object> headers,Channel channel) throws IOException {
+        
         System.out.println(Arrays.toString(bytes));
+        Long deliveryTag=(Long)headers.get(AmqpHeaders.DELIVERY_TAG);
+       channel.basicAck(deliveryTag, false);
+        //channel.basicReject(deliveryTag, true);
     }
 
 }
