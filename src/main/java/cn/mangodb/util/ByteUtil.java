@@ -26,13 +26,18 @@ public class ByteUtil {
      + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)
      + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);
      }
-     
+     /**
+      * 工具用来把传进来的byte[]数组，
+      * 进行非运算后，返回对应的数组
+      * @param array 数组
+      * @return 返回结果的数组
+      */
      public static byte[] inverseArray(byte[] array) {
-        byte[] ba=new byte[array.length];
+        byte[] result=new byte[array.length];
         for(int i=0;i<array.length;i++) {
-            ba[i]=(byte)~array[i];
+            result[i]=(byte)~array[i];
         }
-         return ba;
+         return result;
     }
 
 }
